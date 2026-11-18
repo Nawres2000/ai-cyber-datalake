@@ -1,0 +1,5 @@
+outs:
+- md5: d67f25fbbf5b433609db980067a01d5a
+  size: 13795
+  hash: md5
+  path: model_mlp.pt
