@@ -1,0 +1,5 @@
+outs:
+- md5: b1c9302879c43d11522ed35c7498ddd4
+  size: 932700
+  hash: md5
+  path: predictions_hybride.parquet

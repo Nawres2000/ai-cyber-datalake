@@ -1,0 +1,5 @@
+outs:
+- md5: 998f1d3fa7c8c57cff0f3bf68ba036c5
+  size: 283047
+  hash: md5
+  path: model_charcnn.pt
