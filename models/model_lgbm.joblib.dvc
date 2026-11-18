@@ -1,0 +1,5 @@
+outs:
+- md5: e6774c65c8f20c3637fc3262d2d475f1
+  size: 1041144
+  hash: md5
+  path: model_lgbm.joblib
