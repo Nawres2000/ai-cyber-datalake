@@ -1,10 +1,20 @@
-"""Compare les scores calculés en direct (Kafka -> scorer) avec ceux du notebook 06."""
+"""Compare les scores calculés en direct (Kafka -> scorer) avec ceux du notebook 06.
+
+  py check_live.py                                   (MongoDB local, port 27017)
+  py check_live.py --mongo mongodb://127.0.0.1:27018/ai_cyber_datalake   (MongoDB du docker-compose)
+"""
+import argparse
 import pandas as pd
 from pymongo import MongoClient
 
-db = MongoClient("mongodb://127.0.0.1:27017/ai_cyber_datalake").get_default_database()
+ap = argparse.ArgumentParser()
+ap.add_argument("--mongo", default="mongodb://127.0.0.1:27017/ai_cyber_datalake")
+ap.add_argument("--pred", default=r"..\..\data\predictions_test.parquet")
+a = ap.parse_args()
+
+db = MongoClient(a.mongo).get_default_database()
 live = pd.DataFrame(list(db.incidents.find({"streamed": True}, {"flowId": 1, "proba": 1, "flagged": 1, "_id": 0})))
-ref = pd.read_parquet(r"..\..\data\predictions_test.parquet", columns=["flow_id", "p_final", "threshold"])
+ref = pd.read_parquet(a.pred, columns=["flow_id", "p_final", "threshold"])
 m = live.merge(ref, left_on="flowId", right_on="flow_id", how="inner")
 
 diff = (m["proba"] - m["p_final"]).abs()

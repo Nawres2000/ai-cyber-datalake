@@ -166,6 +166,20 @@ Open http://localhost:3000, **Sign up**, then explore **Dashboard**, **Alerts** 
 
 `streaming/` replays the test alerts into a Kafka topic (Docker), scores them on the fly with the exported hybrid model and writes them to MongoDB; the **Live** page shows them every 2 seconds. See `streaming/README.md`.
 
+## Deployment with Docker (everything in one command)
+
+`platform/docker-compose.yml` runs MongoDB, the API, the website, Kafka, Kafka UI and the Kafka scoring service. Stop the local `npm run dev` servers first (ports 3000, 5000, 8080, 9092 must be free).
+
+```powershell
+cd platform
+copy .env.example .env                                  # then put a long random JWT_SECRET in it
+docker compose up -d --build                            # first build: a few minutes
+docker compose --profile import run --rm importer       # load the results of notebook 06
+docker compose --profile replay up producer             # optional: live replay into Kafka
+```
+
+Open http://localhost:3000 (site), http://localhost:8080 (Kafka UI). MongoDB of the stack listens on port 27018 so that it does not clash with a local MongoDB. Stop with `docker compose down` (add `-v` to delete the database volume).
+
 ## Environment variables
 
 **`backend/.env`**

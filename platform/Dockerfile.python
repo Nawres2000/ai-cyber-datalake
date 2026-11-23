@@ -1,0 +1,9 @@
+# Image commune aux tâches Python : scoring Kafka, producteur, import des résultats
+FROM python:3.12-slim
+RUN apt-get update && apt-get install -y --no-install-recommends libgomp1 && rm -rf /var/lib/apt/lists/*
+WORKDIR /app
+# scikit-learn 1.6.1 = version utilisée pour entraîner les modèles sur Kaggle (notebook 06)
+RUN pip install --no-cache-dir pandas pyarrow numpy pymongo joblib "scikit-learn==1.6.1" lightgbm confluent-kafka
+COPY streaming ./streaming
+COPY ml ./ml
+WORKDIR /app/streaming
