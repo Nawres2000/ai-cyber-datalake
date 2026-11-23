@@ -1,5 +1,0 @@
-outs:
-- md5: 2f4e75fe90ae95f169622ba79e2b9815
-  size: 68841951
-  hash: md5
-  path: gold_ml_entrant.parquet

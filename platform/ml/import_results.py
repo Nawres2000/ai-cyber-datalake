@@ -159,7 +159,7 @@ def main():
     ap.add_argument("--models", default=os.path.join(os.path.dirname(os.path.abspath(__file__)), "model_results.json"))
     a = ap.parse_args()
 
-    from pymongo import MongoClient, ASCENDING, DESCENDING
+    from pymongo import MongoClient, ASCENDING, DESCENDING, ReplaceOne
 
     if not (a.pred or a.data):
         ap.error("donner --pred (notebook 06) ou --data (anciens résultats)")
@@ -173,7 +173,8 @@ def main():
     for name in ("incidents", "hosts", "modelresults", "metas"):
         db[name].delete_many({})
     db.incidents.insert_many(inc_docs, ordered=False)
-    db.hosts.insert_many(host_docs, ordered=False)
+    # upsert par IP : robuste si le service de scoring Kafka écrit des hôtes en même temps
+    db.hosts.bulk_write([ReplaceOne({"ip": h["ip"]}, h, upsert=True) for h in host_docs], ordered=False)
     db.modelresults.insert_many(models, ordered=False)
     db.metas.insert_one(meta)
 

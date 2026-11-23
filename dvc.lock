@@ -1,0 +1,89 @@
+schema: '2.0'
+stages:
+  spark_lakehouse:
+    cmd: echo "Executer notebooks/05_spark_lakehouse.ipynb sur Kaggle (Save & 
+      Run All), puis copier gold_ml_entrant.parquet dans data/"
+    deps:
+    - path: notebooks/05_spark_lakehouse.ipynb
+      hash: md5
+      md5: 762e3a13e8ba21f5cbb3952aea9ecfc7
+      size: 40907
+    outs:
+    - path: data/gold_ml_entrant.parquet
+      hash: md5
+      md5: 2f4e75fe90ae95f169622ba79e2b9815
+      size: 68841951
+  train_models:
+    cmd: echo "Executer notebooks/06_modeles_finaux.ipynb sur Kaggle avec 
+      gold_ml_entrant.parquet en Input, puis copier les exports"
+    deps:
+    - path: data/gold_ml_entrant.parquet
+      hash: md5
+      md5: 2f4e75fe90ae95f169622ba79e2b9815
+      size: 68841951
+    - path: notebooks/06_modeles_finaux.ipynb
+      hash: md5
+      md5: 8c09bc61889ceeef767e4d23f1d1a7bb
+      size: 35132
+    outs:
+    - path: data/predictions_test.parquet
+      hash: md5
+      md5: 95832cc9c840c8d609bdc78e4731763d
+      size: 8810759
+    - path: models/hybrid_config.json
+      hash: md5
+      md5: db109ea22f46209c5ee1f48582bb159b
+      size: 857
+    - path: models/lgbm_flow.joblib
+      hash: md5
+      md5: ca1307d87ee5142135891c809ee04cd0
+      size: 1053761
+    - path: models/tfidf_text.joblib
+      hash: md5
+      md5: 3672304149eb408e12e2fc12ea109bd0
+      size: 7652350
+    - path: reports/model_results_final.json
+      hash: md5
+      md5: 1e06c2cc0b58627f97760504bb6cd93b
+      size: 2753
+  platform_import:
+    cmd: py platform/ml/import_results.py --pred data/predictions_test.parquet 
+      --models reports/model_results_final.json --mongo 
+      mongodb://127.0.0.1:27018/ai_cyber_datalake
+    deps:
+    - path: data/predictions_test.parquet
+      hash: md5
+      md5: 95832cc9c840c8d609bdc78e4731763d
+      size: 8810759
+    - path: platform/ml/import_results.py
+      hash: md5
+      md5: 3b0a4e1351da048f34a029407ef4a0f0
+      size: 8854
+    - path: reports/model_results_final.json
+      hash: md5
+      md5: 1e06c2cc0b58627f97760504bb6cd93b
+      size: 2753
+  evaluate:
+    cmd: py scripts/evaluate.py
+    deps:
+    - path: data/predictions_test.parquet
+      hash: md5
+      md5: 95832cc9c840c8d609bdc78e4731763d
+      size: 8810759
+    - path: scripts/evaluate.py
+      hash: md5
+      md5: d114cb2d3a96c52846c46689dcf43f21
+      size: 2702
+    outs:
+    - path: reports/drift_by_month.csv
+      hash: md5
+      md5: ab66232beba7ebd6c94bcb8f90cceb3e
+      size: 157
+    - path: reports/metrics.json
+      hash: md5
+      md5: 5293141139ee2190ecfa068fb62bea90
+      size: 392
+    - path: reports/pr_curve.csv
+      hash: md5
+      md5: 4163493225b4685833188538575c3365
+      size: 5705

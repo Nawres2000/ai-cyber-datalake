@@ -1,4 +1,4 @@
-# AI Cybersecurity Data Lake
+#  SuriLake — mini-SOC assisté par IA sur logs Suricata
 
 **An AI-assisted Mini-SOC platform.** It turns thousands of raw network alerts into a short, prioritized and explained list of risky hosts.
 

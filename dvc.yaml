@@ -1,0 +1,71 @@
+# Pipeline de reproductibilité : py -m dvc dag | py -m dvc repro | py -m dvc metrics show | py -m dvc plots show
+#
+# Les deux premières étapes s'exécutent sur Kaggle (193 Go de logs, Spark) : elles sont « frozen ».
+# DVC enregistre quand même leurs entrées et sorties (hash dans dvc.lock) : la lignée données -> modèles est tracée.
+# Les étapes evaluate et platform_import s'exécutent en local avec « dvc repro ».
+
+stages:
+  spark_lakehouse:
+    frozen: true
+    cmd: echo "Executer notebooks/05_spark_lakehouse.ipynb sur Kaggle (Save & Run All), puis copier gold_ml_entrant.parquet dans data/"
+    deps:
+      - notebooks/05_spark_lakehouse.ipynb
+    outs:
+      - data/gold_ml_entrant.parquet
+
+  train_models:
+    frozen: true
+    cmd: echo "Executer notebooks/06_modeles_finaux.ipynb sur Kaggle avec gold_ml_entrant.parquet en Input, puis copier les exports"
+    deps:
+      - notebooks/06_modeles_finaux.ipynb
+      - data/gold_ml_entrant.parquet
+    outs:
+      - models/lgbm_flow.joblib
+      - models/tfidf_text.joblib
+      - data/predictions_test.parquet
+      - models/hybrid_config.json:
+          cache: false
+      - reports/model_results_final.json:
+          cache: false
+
+  evaluate:
+    cmd: py scripts/evaluate.py
+    deps:
+      - scripts/evaluate.py
+      - data/predictions_test.parquet
+    metrics:
+      - reports/metrics.json:
+          cache: false
+    outs:
+      - reports/drift_by_month.csv:
+          cache: false
+      - reports/pr_curve.csv:
+          cache: false
+
+  platform_import:
+    cmd: py platform/ml/import_results.py --pred data/predictions_test.parquet --models reports/model_results_final.json --mongo mongodb://127.0.0.1:27018/ai_cyber_datalake
+    deps:
+      - platform/ml/import_results.py
+      - data/predictions_test.parquet
+      - reports/model_results_final.json
+
+plots:
+  - reports/pr_curve.csv:
+      x: recall
+      y: precision
+      template: linear
+      title: Courbe précision-rappel (système hybride, test)
+  - derive_hybride:
+      template: bar_horizontal
+      x:
+        reports/drift_by_month.csv: auc_pr_hybrid
+      y:
+        reports/drift_by_month.csv: month
+      title: AUC-PR par mois - système hybride (fusion)
+  - derive_lightgbm:
+      template: bar_horizontal
+      x:
+        reports/drift_by_month.csv: auc_pr_flow
+      y:
+        reports/drift_by_month.csv: month
+      title: AUC-PR par mois - LightGBM seul (flux)

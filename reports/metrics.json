@@ -1,0 +1,21 @@
+{
+ "n_test": 196290,
+ "prevalence": 0.242,
+ "share_http_text": 0.9005,
+ "period": [
+  "2024-12-22 13:18:31.545011+00:00",
+  "2025-02-11 07:43:54.382001+00:00"
+ ],
+ "hybrid_fusion": {
+  "auc_pr": 0.9867,
+  "roc_auc": 0.9935,
+  "precision": 0.9985,
+  "recall": 0.895,
+  "f1": 0.9439,
+  "threshold": 0.9033
+ },
+ "lightgbm_flow": {
+  "auc_pr": 0.7827,
+  "roc_auc": 0.9131
+ }
+}

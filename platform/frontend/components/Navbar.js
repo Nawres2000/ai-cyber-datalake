@@ -10,7 +10,7 @@ export default function Navbar() {
   const cls = (p) => (path?.startsWith(p) ? 'active' : undefined);
   return (
     <header className="site-header">
-      <Link className="logo" href="/"><i /> AI Cybersecurity Data Lake</Link>
+      <Link className="logo" href="/"><i /> SuriLake</Link>
       <nav>
         {user ? (
           <>

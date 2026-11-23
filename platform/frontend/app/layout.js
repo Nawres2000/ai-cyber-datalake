@@ -4,7 +4,7 @@ import Navbar from '@/components/Navbar';
 import NetworkCanvas from '@/components/NetworkCanvas';
 
 export const metadata = {
-  title: 'AI Cybersecurity Data Lake',
+  title: 'SuriLake · AI-assisted mini-SOC',
   description: 'AI-assisted Mini-SOC platform on Suricata logs: Spark data lake, hybrid ML scoring and host risk scores.',
 };
 
@@ -17,7 +17,7 @@ export default function RootLayout({ children }) {
           <AuthProvider>
             <Navbar />
             {children}
-            <footer>AI Cybersecurity Data Lake · Big Data and Deep Learning project · TEK-UP University</footer>
+            <footer>AI Cybersecurity Data Lake </footer>
           </AuthProvider>
         </div>
       </body>
