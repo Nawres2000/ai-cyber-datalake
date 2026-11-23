@@ -17,6 +17,7 @@ app.use('/api/dashboard', require('./routes/dashboard'));
 app.use('/api/alerts', require('./routes/alerts'));
 app.use('/api/hosts', require('./routes/hosts'));
 app.use('/api/models', require('./routes/models'));
+app.use('/api/live', require('./routes/live'));
 
 app.use((err, req, res, next) => {
   console.error(err);

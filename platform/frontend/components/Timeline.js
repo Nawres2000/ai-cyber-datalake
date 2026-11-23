@@ -19,7 +19,7 @@ export default function Timeline({ data }) {
               <rect x={x} y={H - ht} width={bw} height={ht} rx="3" className="t-all" />
               <rect x={x} y={H - hf} width={bw} height={hf} rx="3" className="t-flag" />
               {(i === 0 || i === data.length - 1 || i % Math.ceil(data.length / 6) === 0) && (
-                <text x={x + bw / 2} y={H + 16} textAnchor="middle" className="t-lbl">{d.day.slice(5)}</text>
+                <text x={x + bw / 2} y={H + 16} textAnchor="middle" className="t-lbl">{d.label ?? d.day.slice(5)}</text>
               )}
             </g>
           );

@@ -3,3 +3,5 @@
 /host_risk_test.parquet
 /text_dataset.parquet
 /predictions_hybride.parquet
+/gold_ml_entrant.parquet
+/predictions_test.parquet

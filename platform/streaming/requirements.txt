@@ -1,0 +1,8 @@
+confluent-kafka
+pandas
+pyarrow
+numpy
+pymongo
+joblib
+scikit-learn
+lightgbm

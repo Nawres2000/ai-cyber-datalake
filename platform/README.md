@@ -162,6 +162,10 @@ npm run dev
 
 Open http://localhost:3000, **Sign up**, then explore **Dashboard**, **Alerts** (search, filters, triage), a host page (click an IP) and **Models**.
 
+## Real-time streaming (Kafka)
+
+`streaming/` replays the test alerts into a Kafka topic (Docker), scores them on the fly with the exported hybrid model and writes them to MongoDB; the **Live** page shows them every 2 seconds. See `streaming/README.md`.
+
 ## Environment variables
 
 **`backend/.env`**
@@ -194,6 +198,7 @@ Generate a secret with: `node -e "console.log(require('crypto').randomBytes(48).
 | `GET` | `/api/alerts` | yes | Paginated alerts. Query: `page`, `limit`, `q` (IP, signature, URL, user-agent), `minRisk`, `source`, `flagged`, `status`, `sort` (`risk` or `ts`) |
 | `PATCH` | `/api/alerts/:id` | yes | Triage: set `status` to `New`, `Investigating` or `Closed` |
 | `GET` | `/api/hosts/:ip` | yes | Host detail: risk, signatures, scoring source, activity per day, latest alerts |
+| `GET` | `/api/live` | yes | Alerts written by the Kafka scoring service: throughput, recent alerts, live host ranking |
 | `GET` | `/api/models` | yes | Model comparison (AUC-PR, CI, precision, recall, unseen-family recall) and metadata |
 
 ## Connecting the ML pipeline

@@ -15,6 +15,7 @@ export default function Navbar() {
         {user ? (
           <>
             <Link className={cls('/dashboard')} href="/dashboard">Dashboard</Link>
+            <Link className={cls('/live')} href="/live">Live</Link>
             <Link className={cls('/alerts')} href="/alerts">Alerts</Link>
             <Link className={cls('/models')} href="/models">Models</Link>
             <button onClick={async () => { await logout(); router.push('/'); }}>Log out</button>

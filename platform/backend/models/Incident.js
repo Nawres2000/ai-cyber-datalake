@@ -23,6 +23,8 @@ const incidentSchema = new mongoose.Schema({
   userAgent: String,
   httpStatus: Number,
   status: { type: String, enum: ['New', 'Investigating', 'Closed'], default: 'New' },
+  streamed: Boolean,          // true when written by the Kafka scoring service (streaming/scorer.py)
+  ingestedAt: Date,           // wall-clock time of scoring, used by the Live page
 }, { timestamps: true });
 
 module.exports = mongoose.model('Incident', incidentSchema);

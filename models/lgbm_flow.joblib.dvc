@@ -1,0 +1,5 @@
+outs:
+- md5: ca1307d87ee5142135891c809ee04cd0
+  size: 1053761
+  hash: md5
+  path: lgbm_flow.joblib

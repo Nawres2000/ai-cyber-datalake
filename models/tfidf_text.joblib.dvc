@@ -1,0 +1,5 @@
+outs:
+- md5: 3672304149eb408e12e2fc12ea109bd0
+  size: 7652350
+  hash: md5
+  path: tfidf_text.joblib
