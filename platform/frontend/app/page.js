@@ -17,7 +17,7 @@ export default function Home() {
       <div className="wrap hero">
         <div>
           <h1>{headline.map((w, i) => <span className="w" style={{ '--i': i }} key={i}>{w}&nbsp;</span>)}</h1>
-          <p className="lead rise" style={{ '--d': '800ms' }}>SuriLake is a mini-SOC platform that stores Suricata network logs in a Bronze / Silver / Gold data lake, scores every alert with machine learning, and ranks hosts by a risk score you can explain.</p>
+          <p className="lead rise" style={{ '--d': '800ms' }}> AI Cybersecurity Data Lake is a mini-SOC platform that stores Suricata network logs in a Bronze / Silver / Gold data lake, scores every alert with machine learning, and ranks hosts by a risk score you can explain.</p>
           <div className="row rise" style={{ '--d': '1000ms' }}>
             <Link className="btn" href="/signup">Create an account</Link>
             <Link className="btn alt" href="/login">Log in</Link>
