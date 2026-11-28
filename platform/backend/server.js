@@ -11,6 +11,15 @@ app.use(cors({ origin: process.env.CLIENT_URL || 'http://localhost:3000', creden
 app.use(express.json());
 app.use(cookieParser());
 
+app.get("/api/health", (req, res) => {
+  const dbUp = mongoose.connection.readyState === 1;
+  res.status(dbUp ? 200 : 503).json({
+    status: dbUp ? "ok" : "degraded",
+    db: dbUp ? "up" : "down",
+    uptime: Math.round(process.uptime()),
+  });
+});
+
 app.get('/api/health', (req, res) => res.json({ ok: true }));
 app.use('/api/auth', require('./routes/auth'));
 app.use('/api/dashboard', require('./routes/dashboard'));
